@@ -1,0 +1,27 @@
+<h1>Shopping Cart</h1>
+<ng-container *ngIf="cart">
+  <p>You have {{ cart.quantity }} items in your shopping cart</p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.title }}</td>
+        <td>{{ getQuantity(product)  }}</td>
+        <td> {{getPrice(product) | currency:'USD':true}} </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td></td>
+        <td></td>
+        <td> {{this.totalPrice| currency:'USD':true}} </td>
+      </tr>
+    </tfoot>
+  </table>
+</ng-container>
