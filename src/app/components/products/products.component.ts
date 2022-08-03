@@ -20,28 +20,32 @@ export class ProductsComponent implements OnInit {
   ) {
 
 
+
+
+  }
+  ngOnInit() {
+
+    this.cartService.getCartItems().subscribe(cart => {
+      this.cart = cart;
+    });
+
     this.productService.getAll()
       .subscribe(
         products => {
           this.products = products;
-          route.queryParamMap.subscribe(params => {
+          this.route.queryParamMap.subscribe(params => {
             this.category = params.get('category');
 
-            this.filteredProducts = (this.category) ?
-              this.products.filter((p: any) => p.category === this.category) :
-              this.products;
+            this.applyFilter();
           });//we cant use snapshot here
         }
       );
 
-
   }
-   ngOnInit() {
-
-    this.cartService.getCart().subscribe(cart => {
-      this.cart = cart;
-    });
+  applyFilter() {
+    this.filteredProducts = (this.category) ?
+      this.products.filter((p: any) => p.category === this.category) :
+      this.products;
   }
-
 
 }

@@ -11,7 +11,7 @@ export class ShoppingCartComponent implements OnInit {
   cart: any
   products: any;
   quantity: any;
-  totalPrice: any = 0;
+  totalPrice: number = 0;
   constructor(
     private cartService: ShoppingCartService,
     private productService: ProductService,
@@ -32,13 +32,12 @@ export class ShoppingCartComponent implements OnInit {
       });
     });
 
-    this.cartService.getCart().subscribe((cart: any) => {
+    this.cartService.getCartItems().subscribe((cart: any) => {
       this.cart = cart;
     });
     this.cartService.getProductsInCart().subscribe((cart: any) => {
       this.products = cart.products;
     });
-
 
   }
   //get the quantity of each product in cart
@@ -52,8 +51,13 @@ export class ShoppingCartComponent implements OnInit {
     return t ? t.quantity : 0;
   }
   getPrice(product: any) {
-    this.totalPrice += product.price * this.getQuantity(product);
-    return product.price * this.getQuantity(product);
+    let price = product.price * this.getQuantity(product);
+    this.totalPrice = price * this.getQuantity(product);
+    return price;
+  }
+
+  clearCart() {
+    this.cartService.clearCart().subscribe();
   }
 
 

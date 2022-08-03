@@ -36,18 +36,28 @@ getProductsInCart(){
   let cartId = localStorage.getItem('cartId');
   return this.http.get(`${this.url}/shopping-cart-products/${cartId}`);
 }
-  getCart() {
+  getCartItems() {
     let cartId = localStorage.getItem('cartId');
     return this.http.get(`${this.url}/shopping-cart/${cartId}`);
 
   }
   getAll() {
+    
     return this.http.get(`${this.url}/shopping-cart`);
 
   }
   remove(product: any) {
     let cartId = localStorage.getItem('cartId');
     return this.http.post(`${this.url}/shopping-cart/remove`, [cartId, product]);
+
+  }
+  clearCart(){
+    let cartId = localStorage.getItem('cartId');
+    return this.http.delete(`${this.url}/shopping-cart/${cartId}`);
+  }
+  getCart(){
+    let cartId = localStorage.getItem('cartId');
+    return this.http.get(`${this.url}/shopping-cart-item/${cartId}`);
 
   }
 

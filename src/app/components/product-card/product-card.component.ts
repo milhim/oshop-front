@@ -22,9 +22,7 @@ export class ProductCardComponent {
     this.cartService.getOrCreateCart(this.product);
 
   }
-  removeFromCart() {
-    this.cartService.remove(this.product).subscribe();
-  }
+
   getQuantity() {
     if (!this.shoppingCart) return 0
     let item: any;
