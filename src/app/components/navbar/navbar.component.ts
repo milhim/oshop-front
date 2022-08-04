@@ -38,7 +38,7 @@ export class NavbarComponent implements OnInit {
         }
       });
     });
-
+    this.getUser();
 
   }
   logout($event: MouseEvent) {
@@ -48,9 +48,9 @@ export class NavbarComponent implements OnInit {
     this.authStatusService.changeAuthStatus(false);
     this.router.navigateByUrl('/login')
   }
-  getUsername() {
-    this.authService.getUsername().subscribe(
-      (username: any) => this.username = username.user.name,
-    );
+  getUser() {
+    this.authService.profileUser().subscribe(res => {
+      this.username = res;
+    });
   }
 }

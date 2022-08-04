@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {HttpClientModule} from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
@@ -36,6 +36,7 @@ import { ShoppingCartService } from './services/shopping-cart.service';
 import { ProductQuantityComponent } from './components/product-quantity/product-quantity.component';
 import { OrderService } from './services/order.service';
 import { ShoppingCartSummaryComponent } from './components/shopping-cart-summary/shopping-cart-summary.component';
+import { AuthInterceptor } from './services/auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,18 +60,19 @@ import { ShoppingCartSummaryComponent } from './components/shopping-cart-summary
     ProductQuantityComponent,
     ShoppingCartSummaryComponent,
 
-    
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
+    ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
     NgxPaginationModule,
     OrderModule,
-    
-    
+
+
   ],
   providers: [
     AuthService,
@@ -82,7 +84,13 @@ import { ShoppingCartSummaryComponent } from './components/shopping-cart-summary
     ProductService,
     ShoppingCartService,
     OrderService,
-    
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+
+
   ],
   bootstrap: [AppComponent]
 })

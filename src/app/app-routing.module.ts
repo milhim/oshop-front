@@ -18,17 +18,21 @@ import { AfterLoginService } from './services/after-login.service';
 import { BeforeLoginService } from './services/before-login.service';
 // ,canActivate:[BeforeLoginService],
 const routes: Routes = [
+
+  { path: 'login', component: LoginComponent,  },
+  { path: 'signup', component: SignupComponent,  },
+  { path: 'profile', component: ProfileComponent,  },
+  { path: 'request-reset-password', component: RequestResetComponent,  },
+  { path: 'response-reset-password', component: ResponseResetComponent,  },
+
   { path: '', component: ProductsComponent,  },
   { path: 'my/orders', component: MyOrdersComponent,  },
   { path: 'products', component: ProductsComponent,  },
   { path: 'shopping-cart', component: ShoppingCartComponent,  },
   { path: 'check-out', component: CheckOutComponent,  },
   { path: 'order-success/:id', component: OrderSuccessComponent,  },
-  { path: 'login', component: LoginComponent,  },
-  { path: 'signup', component: SignupComponent,  },
-  { path: 'profile', component: ProfileComponent,  },
-  { path: 'request-reset-password', component: RequestResetComponent,  },
-  { path: 'response-reset-password', component: ResponseResetComponent,  },
+
+  
 //admin routes
 { path: 'admin/orders', component: AdminOrdersComponent,  },
 { path: 'admin/products/new', component: ProductFormComponent,  },

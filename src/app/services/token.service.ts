@@ -11,12 +11,10 @@ export class TokenService {
   }
   constructor() { }
   handle(token: any) {
-    this.set(token);
-  }
-  private set(token: any) {
     localStorage.setItem('token', token);
   }
-  private get() {
+
+   getToken() {
     return localStorage.getItem('token');
   }
   remove() {
@@ -24,25 +22,22 @@ export class TokenService {
   }
   private payload(token: any) {
     const payload = token.split(".")[1];
-    return this.decode(payload);
-
-  }
-  private decode(payload: any) {
     return JSON.parse(atob(payload));
   }
+
   private isValid() {
-    const token = this.get();
+    const token = this.getToken();
     if (token) {
       const payload = this.payload(token);
       if (payload) {
         return Object.values(this.iss).indexOf(payload.iss) > -1 ? true : false;
-
       }
+    } else {
+      return false;
     }
-    return false;
   }
   logedIn() {
     return this.isValid();
   }
-  
+
 }

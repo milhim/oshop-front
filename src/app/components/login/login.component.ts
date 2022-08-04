@@ -1,42 +1,47 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { TokenService } from 'src/app/services/token.service';
-
+import { AuthenticationService } from 'src/app/services/authentication.service';
 @Component({
-  selector: 'login',
+  selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  public error = null;
+  loginForm: FormGroup;
+  errors:any = null;
   constructor(
-    private authService: AuthService,
+    public router: Router,
+    public fb: FormBuilder,
+    public authService: AuthService,
     private token: TokenService,
-    private router: Router,
-    private authStatusService:AuthenticationService,
-
-  ) { }
-  public form = {
-    email: null,
-    password: null,
-  };
-  ngOnInit(): void {
+    private authState: AuthenticationService
+  ) {
+    this.loginForm = this.fb.group({
+      email: [],
+      password: [],
+    });
   }
+  ngOnInit() {}
   onSubmit() {
-    this.authService.login(this.form)
-      .subscribe(res => {
-        this.handleResponse(res);
+    this.authService.signin(this.loginForm.value).subscribe(
+      (result) => {
+        this.responseHandler(result);
       },
-        error => {
-          this.error = this.authService.handleLoginError(error);
-        });
+      (error) => {
+        this.errors = error.error;
+      },
+      () => {
+        this.authState.changeAuthStatus(true);
+        this.loginForm.reset();
+        this.router.navigate(['profile']);
+      }
+    );
   }
-  handleResponse(data: any) {
-    this.token.handle(data.authorisation.token);
-    this.authStatusService.changeAuthStatus(true);
-    this.router.navigateByUrl('/profile')
+  // Handle response
+  responseHandler(data:any) {
+    this.token.handle(data.access_token);
   }
-
 }

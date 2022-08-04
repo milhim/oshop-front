@@ -1,45 +1,40 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { TokenService } from 'src/app/services/token.service';
-
+import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent implements OnInit {
-  public form = {
-    email: null,
-    name: null,
-    password: null,
-    password_confirmation: null
-
-  };
-  public error = {
-    email: null,
-    name: null,
-    password: null,
-  };
-
+  registerForm: FormGroup;
+  errors: any = null;
   constructor(
-    private authService: AuthService,
-    private token: TokenService,
-    private router: Router
-  ) { }
-
-  ngOnInit(): void {
+    public router: Router,
+    public fb: FormBuilder,
+    public authService: AuthService
+  ) {
+    this.registerForm = this.fb.group({
+      name: [''],
+      email: [''],
+      password: [''],
+      password_confirmation: [''],
+    });
   }
+  ngOnInit() { }
   onSubmit() {
-    this.authService.signup(this.form)
-      .subscribe(
-        res => this.handleResponse(res),
-        error => this.error = this.authService.handleRegisterError(error)
-      );
+    this.authService.register(this.registerForm.value).subscribe(
+      (result) => {
+        console.log(result);
+      },
+      (error) => {
+        this.errors = error.error;
+      },
+      () => {
+        this.registerForm.reset();
+        this.router.navigate(['login']);
+      }
+    );
   }
-  handleResponse(data: any) {
-    this.token.handle(data.authorisation.token);
-    this.router.navigateByUrl('/profile')
-  }
-
 }

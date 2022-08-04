@@ -9,8 +9,9 @@ import { TokenService } from './token.service';
 export class AfterLoginService implements CanActivate {
 
   constructor(private tokenService: TokenService) { }
-
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    return this.tokenService.logedIn();
+    throw new Error('Method not implemented.');
   }
+
+
 }
