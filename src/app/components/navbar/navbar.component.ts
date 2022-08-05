@@ -12,7 +12,8 @@ import { TokenService } from 'src/app/services/token.service';
 export class NavbarComponent implements OnInit {
   public loggedIn = false;
   public username: any;
-  public quantity: any
+  public quantity: any;
+  public isAdmin!:boolean
 
   constructor(
     private authStatusService: AuthenticationService,
@@ -39,6 +40,7 @@ export class NavbarComponent implements OnInit {
       });
     });
     this.getUser();
+    this.isAdmin=this.authService.isAdmin();
 
   }
   logout($event: MouseEvent) {

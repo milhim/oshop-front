@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
 export class User {
@@ -13,7 +14,7 @@ export class User {
 })
 export class AuthService {
   private url = 'http://localhost:8000/api';
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private route: ActivatedRoute) { }
 
   handleLoginError(error: any) {
     return error.error.error;
@@ -22,10 +23,17 @@ export class AuthService {
   handleRegisterError(error: any) {
     return error.error.errors;
   }
-  signin(user:User):Observable<any>{
+  getReturnUrl() {
+    let returnUrl = localStorage.getItem('returnUrl');
+    return returnUrl;
+  }
+  signin(user: User): Observable<any> {
+    let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
+    localStorage.setItem('returnUrl', returnUrl);
+   
     return this.http.post(`${this.url}/login`, user);
   }
-  register(user:User):Observable<any>{
+  register(user: User): Observable<any> {
     return this.http.post(`${this.url}/register`, user);
   }
   sendPasswordRequest(data: any) {
@@ -38,6 +46,14 @@ export class AuthService {
   profileUser(): Observable<any> {
     return this.http.get(`${this.url}/profile`);
   }
- 
+  isAdmin(): boolean {
+    if (localStorage.getItem('isAdmin') === '1') {
+      return true;
+    }
+    return false;
+  }
+  removeIsAdmin() {
+    localStorage.removeItem('isAdmin');
+  }
 
 }

@@ -36,7 +36,14 @@ export class LoginComponent implements OnInit {
       () => {
         this.authState.changeAuthStatus(true);
         this.loginForm.reset();
-        this.router.navigate(['profile']);
+        this.router.navigate([this.authService.getReturnUrl()]);
+        this.authService.profileUser().subscribe(user => {
+          if (user?.isAdmin === 1) {
+            localStorage.setItem('isAdmin', "1");
+          } else {
+            localStorage.setItem('isAdmin', "0");
+          }
+        })
       }
     );
   }

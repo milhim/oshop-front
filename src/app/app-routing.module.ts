@@ -14,7 +14,9 @@ import { ProductsComponent } from './components/products/products.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { AdminAuthGaurdService } from './services/admin-auth-gaurd.service';
 import { AfterLoginService } from './services/after-login.service';
+import { AuthGuardService } from './services/auth-guard.service';
 import { BeforeLoginService } from './services/before-login.service';
 // ,canActivate:[BeforeLoginService],
 const routes: Routes = [
@@ -24,20 +26,19 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent,  },
   { path: 'request-reset-password', component: RequestResetComponent,  },
   { path: 'response-reset-password', component: ResponseResetComponent,  },
-
   { path: '', component: ProductsComponent,  },
-  { path: 'my/orders', component: MyOrdersComponent,  },
   { path: 'products', component: ProductsComponent,  },
   { path: 'shopping-cart', component: ShoppingCartComponent,  },
-  { path: 'check-out', component: CheckOutComponent,  },
-  { path: 'order-success/:id', component: OrderSuccessComponent,  },
 
-  
+  { path: 'my/orders', component: MyOrdersComponent, canActivate:[AuthGuardService] },
+  { path: 'check-out', component: CheckOutComponent, canActivate:[AuthGuardService] },
+  { path: 'order-success/:id', component: OrderSuccessComponent, canActivate:[AuthGuardService] },
+
 //admin routes
-{ path: 'admin/orders', component: AdminOrdersComponent,  },
-{ path: 'admin/products/new', component: ProductFormComponent,  },
-{ path: 'admin/products/:id', component: ProductFormComponent,  },
-{ path: 'admin/products', component: AdminProductsComponent,  },
+{ path: 'admin/orders', component: AdminOrdersComponent,canActivate:[AuthGuardService,AdminAuthGaurdService]  },
+{ path: 'admin/products/new', component: ProductFormComponent,canActivate:[AuthGuardService,AdminAuthGaurdService]  },
+{ path: 'admin/products/:id', component: ProductFormComponent, canActivate:[AuthGuardService,AdminAuthGaurdService] },
+{ path: 'admin/products', component: AdminProductsComponent, canActivate:[AuthGuardService,AdminAuthGaurdService] },
 
 
 ];

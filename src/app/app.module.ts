@@ -37,6 +37,8 @@ import { ProductQuantityComponent } from './components/product-quantity/product-
 import { OrderService } from './services/order.service';
 import { ShoppingCartSummaryComponent } from './components/shopping-cart-summary/shopping-cart-summary.component';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { AuthGuardService } from './services/auth-guard.service';
+import { AdminAuthGaurdService } from './services/admin-auth-gaurd.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -84,6 +86,10 @@ import { AuthInterceptor } from './services/auth.interceptor';
     ProductService,
     ShoppingCartService,
     OrderService,
+    AuthGuardService,
+    AdminAuthGaurdService,
+    
+    
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
